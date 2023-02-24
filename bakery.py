@@ -29,3 +29,16 @@ def vstup(i: int):
 
 def vystup(i: int):
     poradie[i] = 0
+
+
+def bakery(s, i):
+    global index
+    vstup(i)
+    index += 1
+    print(s, index)
+    vystup(i)
+
+
+if __name__ == '__main__':
+    threads = [Thread(bakery, f"vlakno{i} ", i) for i in range(1, pocetVlakien)]
+    [t.join() for t in threads]
