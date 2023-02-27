@@ -12,7 +12,7 @@ from fei.ppds import Thread
 from time import sleep
 
 pocetVlakien: int = 10  # premnenná na zadefinovanie počtu vlákien
-index = 0
+index: int = 0
 poradie: list[int] = [0] * pocetVlakien
 vybrany: list[bool] = [False] * pocetVlakien
 
@@ -30,6 +30,7 @@ def vstup(i: int):
         while vybrany[j]:
             continue
         while poradie[j] != 0 and (poradie[j] < poradie[i] or (poradie[j] == poradie[i] and j < i)):
+            # hľadanie najmenšieho poradového čísla s najmenším indexom v poradovom poli inak proces čaká
             continue
 
 
@@ -60,5 +61,5 @@ def bakery(s, i):
 
 
 if __name__ == '__main__':
-    threads = [Thread(bakery, f"vlakno{i} ", i) for i in range(1, pocetVlakien)]
+    threads = [Thread(bakery, f"vlakno {i + 1} ", i) for i in range(pocetVlakien)]  # i+1 pretože Id vlákna začína od 1
     [t.join() for t in threads]
