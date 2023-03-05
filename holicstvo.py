@@ -40,7 +40,7 @@ def balk(i):
 
 
 def growing_hair(i):
-    print(f"Zakaznik {i} odisiel a nechava si narast vlasy")
+    print(f"Zákazník {i} odišiel a necháva si narásť vlasy")
     sleep(uniform(0.8, 2))
 
 
@@ -53,14 +53,15 @@ def customer(i, shared):
 
         else:
             shared.cakaren += 1
-            print(f'Zakaznik {i} vstúpil do čakárne. Počet ľudí: {shared.cakaren}')
+            print(f'Zákaznik {i} vstúpil do čakárne. Počet ľudí: {shared.cakaren}')
             shared.mutex.unlock()
 
             shared.zakaznik.signal()
             shared.holic.wait()
             get_haircut(i)
-            shared.holic_dostrihal.signal()
-            shared.zakaznik_ostrihany.wait()
+            shared.zakaznik_ostrihany.signal()
+            shared.holic_dostrihal.wait()
+
             shared.mutex.lock()
             shared.cakaren -= 1
             shared.mutex.unlock()
@@ -72,8 +73,8 @@ def barber(shared):
         shared.zakaznik.wait()
         shared.holic.signal()
         cut_hair()
-        shared.zakaznik_ostrihany.signal()
-        shared.holic_dostrihal.wait()
+        shared.holic_dostrihal.signal()
+        shared.zakaznik_ostrihany.wait()
 
 
 def main():
