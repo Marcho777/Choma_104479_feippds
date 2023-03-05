@@ -20,17 +20,17 @@ class Shared(object):
         self.cakaren = 0
         self.zakaznik = Semaphore(0)
         self.holic = Semaphore(0)
-        self.zakaznik_ostrihany = Semaphore(1)
-        self.holic_dostrihal = Semaphore(1)
+        self.zakaznik_ostrihany = Semaphore(0)
+        self.holic_dostrihal = Semaphore(0)
 
 
 def get_haircut(i):
-    sleep(uniform(0.2, 1))
+    sleep(0.5)
     print(f"Zákaznik {i} sa strihá.")
 
 
 def cut_hair():
-    sleep(uniform(0.2, 1))
+    sleep(0.5)
     print("Holič strihá vlasy")
 
 
@@ -40,6 +40,7 @@ def balk(i):
 
 
 def growing_hair(i):
+    print(f"Zakaznik {i} odisiel a nechava si narast vlasy")
     sleep(uniform(0.8, 2))
 
 
@@ -47,34 +48,32 @@ def customer(i, shared):
     while True:
         shared.mutex.lock()
         if shared.cakaren == N:
+            shared.mutex.unlock()
             balk(i)
+
         else:
             shared.cakaren += 1
             print(f'Zakaznik {i} vstúpil do čakárne. Počet ľudí: {shared.cakaren}')
-        shared.mutex.unlock()
-        shared.holic_dostrihal.wait()
-        shared.zakaznik.signal()
-        shared.holic.wait()
-        get_haircut(i)
-        shared.holic.wait()
-        shared.zakaznik.signal()
-        shared.mutex.lock()
-        shared.cakaren -= 1
-        shared.mutex.unlock()
-        print(f"Zákazník {i} odchádza")
-        shared.zakaznik_ostrihany.signal()
-        growing_hair(i)
+            shared.mutex.unlock()
+
+            shared.zakaznik.signal()
+            shared.holic.wait()
+            get_haircut(i)
+            shared.holic_dostrihal.signal()
+            shared.zakaznik_ostrihany.wait()
+            shared.mutex.lock()
+            shared.cakaren -= 1
+            shared.mutex.unlock()
+            growing_hair(i)
 
 
 def barber(shared):
     while True:
-        shared.zakaznik_ostrihany.wait()
         shared.zakaznik.wait()
         shared.holic.signal()
         cut_hair()
-        shared.holic.signal()
-        shared.zakaznik.wait()
-        shared.holic_dostrihal.signal()
+        shared.zakaznik_ostrihany.signal()
+        shared.holic_dostrihal.wait()
 
 
 def main():
