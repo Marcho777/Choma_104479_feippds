@@ -1,4 +1,7 @@
-"""
+"""Tento modul implementuje chod holičstva s predbiehaním.
+
+Problém holičstva s predbiehaním patrí medzi problémy medziprocesovej komunikácie a ilustruje ako sa synchronizujú
+vlákna.
 """
 
 __authors__ = "Marián Choma, Marián Šebeňa"
@@ -9,13 +12,15 @@ from fei.ppds import Mutex, Thread, Semaphore, print
 from time import sleep
 from random import uniform
 
-C = 5
-N = 3
+C = 5  # počet vlákien(zákazníkov)
+N = 3  # počet miest v čakárni
 
 
-class Shared(object):
-
+class Zdielane(object):
+    """Trieda reprezentujúca zdieľané premenné"""
     def __init__(self):
+        """Konštruktor inicializuje 4 semafory, vytvorí Mutex objekt a počítadlo pre čakáreň.
+        """
         self.mutex = Mutex()
         self.cakaren = 0
         self.zakaznik = Semaphore(0)
@@ -24,65 +29,99 @@ class Shared(object):
         self.holic_dostrihal = Semaphore(0)
 
 
-def get_haircut(i):
+def ostrihanie_sa(i):
+    """Funkcia pre simuláciu strihania vlasov u zákazníka
+
+    :param i: Id vlákna
+    :return:
+    """
     sleep(0.5)
     print(f"Zákaznik {i} sa strihá.")
 
 
-def cut_hair():
+def strihanie_vlasov():
+    """Funkcia pre simuláciu strihania vlasov holičom
+
+    :return:
+    """
     sleep(0.5)
     print("Holič strihá vlasy")
 
 
-def balk(i):
+def cakanie(i):
+    """Uspanie vlákna simulujúce čakanie zákazníka ak je čakáreň plná
+
+    :param i: Id vlákna
+    :return:
+    """
     print(f"Čakáren je plná. Zakaznik  {i} čaká")
     sleep(uniform(0.5, 1))
 
 
-def growing_hair(i):
+def rast_vlasov(i):
+    """Informuje o dostrihaní zákazníka a simuluje čas na opätovné navštívenie holiča
+
+    :param i: Id vlákna
+    :return:
+    """
     print(f"Zákazník {i} odišiel a necháva si narásť vlasy")
     sleep(uniform(0.8, 2))
 
 
-def customer(i, shared):
+def zakaznik(i, zdielane):
+    """Reprezentuje chovanie zákazníka a proces strihania vlasov z pohľadu zákazníka.
+
+    :param i: Id vlákna
+    :param zdielane: Objekt triedy Zdielane
+    :return:
+    """
     while True:
-        shared.mutex.lock()
-        if shared.cakaren == N:
-            shared.mutex.unlock()
-            balk(i)
+        zdielane.mutex.lock()
+        if zdielane.cakaren == N:
+            zdielane.mutex.unlock()
+            cakanie(i)
 
         else:
-            shared.cakaren += 1
-            print(f'Zákaznik {i} vstúpil do čakárne. Počet ľudí: {shared.cakaren}')
-            shared.mutex.unlock()
+            zdielane.cakaren += 1
+            print(f'Zákaznik {i} vstúpil do čakárne. Počet ľudí: {zdielane.cakaren}')
+            zdielane.mutex.unlock()
 
-            shared.zakaznik.signal()
-            shared.holic.wait()
-            get_haircut(i)
-            shared.zakaznik_ostrihany.signal()
-            shared.holic_dostrihal.wait()
+            zdielane.zakaznik.signal()
+            zdielane.holic.wait()
+            ostrihanie_sa(i)
+            zdielane.zakaznik_ostrihany.signal()
+            zdielane.holic_dostrihal.wait()
 
-            shared.mutex.lock()
-            shared.cakaren -= 1
-            shared.mutex.unlock()
-            growing_hair(i)
+            zdielane.mutex.lock()
+            zdielane.cakaren -= 1
+            zdielane.mutex.unlock()
+            rast_vlasov(i)
 
 
-def barber(shared):
+def holic(shared):
+    """Reprezentuje chovanie holiča a proces strihania vlasov z pohľadu holiča.
+
+    :param shared: Objekt triedy Zdielane
+    :return:
+    """
     while True:
         shared.zakaznik.wait()
         shared.holic.signal()
-        cut_hair()
+        strihanie_vlasov()
         shared.holic_dostrihal.signal()
         shared.zakaznik_ostrihany.wait()
 
 
 def main():
-    shared = Shared()
+    """Vytvorenie vlákien a objektu triedy Zdielane.
+
+    :return:
+    """
+    shared = Zdielane()
     customers = []
     for i in range(C):
-        customers.append(Thread(customer, i, shared))
-    hair_stylist = Thread(barber, shared)
+        customers.append(Thread(zakaznik, i, shared))
+    hair_stylist = Thread(holic, shared)
 
     for t in customers + [hair_stylist]:
         t.join()
