@@ -98,18 +98,18 @@ def zakaznik(i, zdielane):
             rast_vlasov(i)
 
 
-def holic(shared):
+def holic(zdielane):
     """Reprezentuje chovanie holiča a proces strihania vlasov z pohľadu holiča.
 
-    :param shared: Objekt triedy Zdielane
+    :param zdielane: Objekt triedy Zdielane
     :return:
     """
     while True:
-        shared.zakaznik.wait()
-        shared.holic.signal()
+        zdielane.zakaznik.wait()
+        zdielane.holic.signal()
         strihanie_vlasov()
-        shared.holic_dostrihal.signal()
-        shared.zakaznik_ostrihany.wait()
+        zdielane.holic_dostrihal.signal()
+        zdielane.zakaznik_ostrihany.wait()
 
 
 def main():
