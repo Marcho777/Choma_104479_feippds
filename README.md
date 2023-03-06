@@ -31,5 +31,16 @@ na riadku 51. V prípade, že je v čakárni voľné miesto zvýšime počet ľu
 **zdielane**, ktorý na zvýši jeho hodnotu na 1. Následne sa proces zastaví pomocou funkcie **wait** semafora **holic** na 90 riadku, pretože je jeho hodnota 0. 
 
 Vo funkcii **holic** proces čakal na 108 riadku na signal z semafora **zakaznik**, kde ho pomocou funkcie **wait()** nastaví naspäť na 0. Tento proces 
-simuluje to, že zákazník zobudí holiča. Ten mu potom, pošle signál naspäť pomocou semafora **holic** na 109 riadku. To znamená 
+simuluje to, že zákazník zobudí holiča. Ten mu potom, pošle signál naspäť pomocou semafora **holic** na 109 riadku, že je pripravený začať strihať. To znamená 
+že funkcia **zakazník** môže pokračovať ďalej v kóde. Vykonajú sa funkcie na simulovanie procesu strihania u holiča a zákazníka. 
+Potom semafory **zakaznik_ostrihany** a **holic_dostrihal** inkrementujú svoje hodnoty na 1, týmto krokom signalizujú, že už dokončili svoje prácu.
+Zákazník už len čaká na riadku 93 na signál od holiča a naopak holič čaká na riadku 112 na signál od zákazníka, kde sa hodnoty semaforov nastavia opäť
+na 0 a tak sa tieto procesy zosynchronizujú. 
 
+Nakoniec ešte vo funkcii **zakaznik** na riadku 95 zamkneme **mutex**, pretože pristupujeme ku kritickej časti kódu, kde zmenšíme počet
+zákazníkov v čakárni. Odomkneme **mutex**  a funkciou **rast_vlasov** uspíme vlákno, tak docielime, že vlákno sa nebude 
+pokúšať hneď opakovať daný cyklus.
+
+## Výpis z konzoly
+
+![Vypis z konzoly](/vypis.png)
