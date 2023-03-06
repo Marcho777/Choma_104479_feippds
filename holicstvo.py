@@ -19,7 +19,7 @@ N = 3  # počet miest v čakárni
 class Zdielane(object):
     """Trieda reprezentujúca zdieľané premenné"""
     def __init__(self):
-        """Konštruktor inicializuje 4 semafory, vytvorí Mutex objekt a počítadlo pre čakáreň.
+        """Konštruktor inicializuje 4 semafory, vytvorí objekt triedy Mutex a počítadlo pre čakáreň.
         """
         self.mutex = Mutex()
         self.cakaren = 0
