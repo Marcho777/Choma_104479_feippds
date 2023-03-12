@@ -51,25 +51,25 @@ def filozof(i: int, zdielane: Zdielane):
     """
     for _ in range(POC_KOL):
         rozmyslanie(i)
-        left_fork = i
-        right_fork = (i + 1) % POC_FILOZOFOV
+        lava_vidlicka = i
+        prava_vidlicka = (i + 1) % POC_FILOZOFOV
         if i % 2 == 0:
-            zdielane.vidlicky[right_fork].wait()
-            print(f"Filozof {i} si vzal pravu vydlicku a caka na lavu.")
-            zdielane.vidlicky[left_fork].wait()
-            print(f"Filozof {i} si vzal lavu vydlicku a zacal jest")
+            zdielane.vidlicky[prava_vidlicka].wait()
+            print(f"Filozof {i} si vzal pravú vydličku a čaká na ľavú.")
+            zdielane.vidlicky[lava_vidlicka].wait()
+            print(f"Filozof {i} si vzal ľavú vydličku a začal jesť")
         else:
-            zdielane.vidlicky[left_fork].wait()
-            print(f"Filozof {i} si vzal lavu vydlicku a caka na pravu")
-            zdielane.vidlicky[right_fork].wait()
-            print(f"Filozof {i} si vzal pravu vydlicku a moze zacat jest")
+            zdielane.vidlicky[lava_vidlicka].wait()
+            print(f"Filozof {i} si vzal ľavú vydličku a čaká na pravú")
+            zdielane.vidlicky[prava_vidlicka].wait()
+            print(f"Filozof {i} si vzal pravú vydličku a môže začať jesť")
 
         veceranie(i)
 
-        zdielane.vidlicky[left_fork].signal()
-        print(f"Filozof {i} vratil lavu vidlicku")
-        zdielane.vidlicky[right_fork].signal()
-        print(f"Filozof {i} vratil pravu vidlicku")
+        zdielane.vidlicky[lava_vidlicka].signal()
+        print(f"Filozof {i} vrátil ľavú vidličku")
+        zdielane.vidlicky[prava_vidlicka].signal()
+        print(f"Filozof {i} vrátil pravú vidličku")
 
 
 def main():
