@@ -35,9 +35,7 @@ def kuchar(zdielane: Zdielane):
     """
     while True:
         zdielane.prazdnyHrniec.wait()
-        zdielane.mutex2.lock()
         zdielane.porcie = KAPACITA_HRNCA
-        zdielane.mutex2.unlock()
         sleep(0.5)
         print("Kuchar: navaril som jedlo a dal som ho do hrnca")
         zdielane.plnyHrniec.signal()
