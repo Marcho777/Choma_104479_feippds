@@ -58,3 +58,9 @@ Ak kuchár dovarí a inkrementuje hodnotu semafora na 1, divoch môže pokračov
 odomkne **mutex2**. Tým môže k hrncu pristúpiť ďalší divoch a celý tento proces sa opakuje. Na riadku 82 je vypísané do konzoly, 
 že divoch hoduje. Hodovať môže viac divochov naraz. Ak divosi dojedia tak sa musia počkať pred bariérou, až keď budú všetci môžu začať 
 pristupovať k hrncu. 
+
+## Výpis
+
+![Vypis z konzoly](/vypis.png)
+
+Na obrázku môžete vidieť výpis programu. Kapacita hrnca bola nastavená na 3 a počet divochov na 5. 
