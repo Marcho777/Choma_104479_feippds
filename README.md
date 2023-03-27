@@ -32,9 +32,19 @@ Na riadku 16 je trieda **Zdielane**, v ktorej sme si inicializovali zdieľané d
 
 
 ![Vypis z konzoly](/kuchar.png)
+
+
 Funkcia **kuchar** je definovaná na riadku 30. Vnútri funkcie sa nachádza nekonečný while cyklus v ktorom na 37 riadku 
 je použitý synchronizačný vzor *Semafor*, ktorý čaká pomocou metódy **wait** na signál od divocha, že je hrniec prázdny. Keď 
 dostane signál, tak môže pokračovať ďalej v kóde, kde na 38 riadku je použitý ďalší synchronizačný vzor *Mutex*. Slúži na 
 uzamknutie vlákna pretože pristupujeme ku zdieľanej premennej **porcie**, tu nastavíme na 39 riadku počet porcií na maximálnu 
 kapacitu hrnca a následne môžeme odomknúť vlákno. Na konci while cyklu signalizujeme pomocou druhého semaforu, že kuchár doplnil 
 hrniec a tak môžu divosi pokračovať v hodovaní.
+
+![Vypis z konzoly](/bariera.png)
+
+
+Funkcia **divoch** implementovaná na riadku 46 simuluje správanie sa divocha. V nekonečnom while cykle je implementovaná 
+znovupoužiteľná bariéra, ktorú môžete vidieť na obrázku. Slúži na to aby sa divosi na začiatku počklali a až potom prichádzali 
+po jednom k hrnci. Znovupoužiteľnú bariéru sme museli použiť preto, lebo bariéru použivame v cykle. Ak by sme použili len jednoduchú 
+bariéru tak by fungovala dobre len pri prvom zbehnutí cyklu. 
