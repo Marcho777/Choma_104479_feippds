@@ -57,7 +57,6 @@ def divoch(id: int, zdielane: Zdielane):
         sleep(0.5)
         if zdielane.pocitadloBariera == POCET_DIVOCHOV:
             print(f"Divoch {id}: už sme všetci, môžme začať večerať.")
-            sleep(0.5)
             zdielane.bariera1.signal(POCET_DIVOCHOV)
         zdielane.mutex1.unlock()
         zdielane.bariera1.wait()
@@ -73,13 +72,13 @@ def divoch(id: int, zdielane: Zdielane):
         print(f"Divoch {id}: počet porcií v hrnci {zdielane.porcie}")
         if zdielane.porcie == 0:
             print(f"Divoch {id}: budím kuchára, prázdny hrniec")
-            sleep(0.5)
+
             zdielane.prazdnyHrniec.signal()
             print(zdielane.prazdnyHrniec)
             zdielane.plnyHrniec.wait()
         zdielane.porcie -= 1
         print(f"Divoch {id}: beriem si porciu. Pocet porcii v hrnci: {zdielane.porcie}")
-
+        sleep(0.5)
         zdielane.mutex1.unlock()
 
         print(f"Divoch {id}: hodujem")
