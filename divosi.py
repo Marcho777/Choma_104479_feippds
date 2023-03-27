@@ -88,9 +88,9 @@ def main():
     :return:
     """
     zdielane: Zdielane = Zdielane()
-    filozofi: list[Thread] = [Thread(divoch, i, zdielane) for i in range(POCET_DIVOCHOV)]
+    divosi: list[Thread] = [Thread(divoch, i, zdielane) for i in range(POCET_DIVOCHOV)]
     kucharPole = Thread(kuchar, zdielane)
-    for p in filozofi + [kucharPole]:
+    for p in divosi + [kucharPole]:
         p.join()
 
 
