@@ -1,17 +1,15 @@
-""" Tento modul implementuje problém večerujúcich filozofov.
-
-Implemetácia využíva riešenie pomocou ľavákov a pravákov.
+""" Tento modul implementuje problém hodujúcich divochov.
+Implemetácia využíva riešenie s jedným kuchárom.
 """
 
 __authors__ = "Marián Choma, Tomáš Vavro"
 __email__ = "xchoma@stuba.sk, xvavro@stuba.sk"
 __license__ = "MIT"
 
-from fei.ppds import Mutex, Thread, Semaphore, print, Event
+from fei.ppds import Mutex, Thread, Semaphore, print
 from time import sleep
 
 POCET_DIVOCHOV: int = 5
-POCET_KUCHAROV: int = 2
 KAPACITA_HRNCA: int = 3
 
 
@@ -30,16 +28,28 @@ class Zdielane:
 
 
 def kuchar(zdielane: Zdielane):
-    while(True):
-        zdielane.prazdnyHrniec.wait()
+    """Funkcia simuluje správanie sa kuchára.
 
+    :param zdielane: objekt triedy Zdielane
+    :return:
+    """
+    while True:
+        zdielane.prazdnyHrniec.wait()
+        zdielane.mutex2.lock()
         zdielane.porcie = KAPACITA_HRNCA
+        zdielane.mutex2.unlock()
         sleep(0.5)
         print("Kuchar: navaril som jedlo a dal som ho do hrnca")
         zdielane.plnyHrniec.signal()
 
 
 def divoch(id: int, zdielane: Zdielane):
+    """Funkcia reprezentuje správanie sa divocha.
+
+    :param id: id vlákna divocha
+    :param zdielane: objekt triedy Zdielane
+    :return:
+    """
     while True:
         zdielane.mutex1.lock()
         zdielane.pocitadloBariera += 1
@@ -60,9 +70,9 @@ def divoch(id: int, zdielane: Zdielane):
         zdielane.bariera2.wait()
 
         zdielane.mutex1.lock()
-        print(f"divoch {id}: počet porcií v hrnci {zdielane.porcie}")
+        print(f"Divoch {id}: počet porcií v hrnci {zdielane.porcie}")
         if zdielane.porcie == 0:
-            print(f"divoch {id}: budím kuchára, prázdny hrniec")
+            print(f"Divoch {id}: budím kuchára, prázdny hrniec")
             sleep(0.5)
             zdielane.prazdnyHrniec.signal()
             print(zdielane.prazdnyHrniec)
@@ -72,12 +82,12 @@ def divoch(id: int, zdielane: Zdielane):
 
         zdielane.mutex1.unlock()
 
-        print(f"divoch {id}: hodujem")
+        print(f"Divoch {id}: hodujem")
         sleep(0.5)
+
 
 def main():
     """Vytvorenie vlákien a objektu triedy Zdielane.
-
     :return:
     """
     zdielane: Zdielane = Zdielane()
