@@ -72,9 +72,7 @@ def divoch(id: int, zdielane: Zdielane):
         print(f"Divoch {id}: počet porcií v hrnci {zdielane.porcie}")
         if zdielane.porcie == 0:
             print(f"Divoch {id}: budím kuchára, prázdny hrniec")
-
             zdielane.prazdnyHrniec.signal()
-            print(zdielane.prazdnyHrniec)
             zdielane.plnyHrniec.wait()
         zdielane.porcie -= 1
         print(f"Divoch {id}: beriem si porciu. Pocet porcii v hrnci: {zdielane.porcie}")
