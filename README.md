@@ -42,7 +42,7 @@ vypočítané rozmery blokov v gride a vlákien v bloku. Nakoniec výsledný obr
 ![Vypis z konzoly](images/image13.jpg)
 
 ![Vypis z konzoly](grayscale/gray_image17.jpg)
-![Vypis z konzoly](images/image13.jpg)
+![Vypis z konzoly](images/image6.jpg)
 
 
 
