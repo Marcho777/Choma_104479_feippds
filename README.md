@@ -36,6 +36,10 @@ Potom si vypočítame koľko blokov bude potrebných na celkový výpočet ako s
 dané číslo celočíselne podelíme s rozmermi vlákien v bloku. Na riadku 73 zavoláme kernel funkciu do ktorej musíme ešte zadať  
 vypočítané rozmery blokov v gride a vlákien v bloku. Nakoniec výsledný obrázok uložíme do priečinka.
 
+## Namerané časy
+Priemerný nameraný čas konvertovania 20 obrázkov pri piatich pusteniach s použitím GPU bol 0.6236 sekúnd, s použitím CPU bol 10.831. 
+
+
 ## Ukážka výsledkov
 
 ![Vypis z konzoly](grayscale/gray_image5.jpg)
