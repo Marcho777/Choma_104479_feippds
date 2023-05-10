@@ -37,7 +37,7 @@ dané číslo celočíselne podelíme s rozmermi vlákien v bloku. Na riadku 73 
 vypočítané rozmery blokov v gride a vlákien v bloku. Nakoniec výsledný obrázok uložíme do priečinka.
 
 ## Namerané časy
-Priemerný nameraný čas konvertovania 20 obrázkov pri piatich pusteniach s použitím GPU bol 0.6236 sekúnd, s použitím CPU bol 10.831. 
+Priemerný nameraný čas konvertovania 20 obrázkov pri piatich pusteniach s použitím GPU bol 0.6236 sekúnd, s použitím CPU bol 10.831 sekúnd. 
 
 
 ## Ukážka výsledkov
