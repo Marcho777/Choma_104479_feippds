@@ -39,10 +39,10 @@ vypočítané rozmery blokov v gride a vlákien v bloku. Nakoniec výsledný obr
 ## Ukážka výsledkov
 
 ![Vypis z konzoly](grayscale/gray_image5.jpg)
-![Vypis z konzoly](images/gray_image13.jpg)
+![Vypis z konzoly](images/image13.jpg)
 
 ![Vypis z konzoly](grayscale/gray_image17.jpg)
-![Vypis z konzoly](images/gray_image13.jpg)
+![Vypis z konzoly](images/image13.jpg)
 
 
 
