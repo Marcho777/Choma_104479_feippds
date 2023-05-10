@@ -79,6 +79,6 @@ def gpu_convert():
 if __name__ == "__main__":
     start = time.time()
     gpu_convert()
-    cpu_convert()
+    # cpu_convert()
     end = time.time()
     print(end - start)
